@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Happy Birthday Shree ✨</title>
+
+  <!-- Google font (romantic) -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1:#000000; /* changed to black */
+      --bg2:#000000; /* changed to black */
+      --accent:#ffd1dc;
+      --muted:#f8eef6;
+      --glass: rgba(255,255,255,0.06);
+    }
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+    body{
+      background: radial-gradient(1200px 600px at 10% 10%, rgba(255,209,220,0.08), transparent),
+                  linear-gradient(180deg,var(--bg1),var(--bg2));
+      color:var(--muted); -webkit-font-smoothing:antialiased;
+      overflow-x:hidden;
+    }
+    body.locked {
+      overflow: hidden;
+    }
+
+    .wrap{max-width:1000px;margin:0 auto;padding:36px 20px 120px; display:none;}
+    .hero{text-align:center;padding:48px 20px;border-radius:18px;background:linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow: 0 6px 30px rgba(0,0,0,0.4); position:relative; overflow:hidden;}
+    .greeting{font-family:'Great Vibes',cursive;font-size:64px;line-height:1;color:var(--accent);
+      text-shadow:0 6px 20px rgba(255,160,190,0.12),0 0 30px rgba(255,170,190,0.06);
+      margin:0;animation:glow 2.8s ease-in-out infinite;}
+    @keyframes glow{0%,100%{filter:drop-shadow(0 0 2px rgba(255,200,220,0.4));transform:translateY(0);}50%{filter:drop-shadow(0 0 22px rgba(255,180,210,0.35));transform:translateY(-4px);}}
+    .subtitle{margin-top:8px;color:#f8e9ef;opacity:0.95;font-size:18px;}
+    .hero .small{margin-top:12px;color:#f6e9f0;opacity:0.9;}
+    .hearts{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+    section.card{margin-top:28px;padding:22px;border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));box-shadow:0 8px 30px rgba(0,0,0,0.45);}
+    h2{margin:0 0 12px 0;font-size:22px;color:var(--accent);font-weight:600;}
+    p.lead{margin:0 0 14px 0;color:#f0dbdf;opacity:0.95;}
+    .timeline{display:flex;flex-direction:column;gap:14px;padding-left:8px;}
+    .moment{display:flex;gap:12px;align-items:flex-start;}
+    .dot{width:12px;height:12px;border-radius:50%;background:var(--accent);margin-top:6px;box-shadow:0 4px 14px rgba(255,170,190,0.18);}
+    .moment .meta{font-size:14px;color:#ffeaf0;}
+    .moment .desc{font-size:13px;color:#f7e9ef;opacity:0.95;}
+    .photoreel{display:flex;gap:10px;overflow:auto;padding-bottom:6px;}
+    .photo{min-width:260px;height:430px;border-radius:10px;flex:0 0 auto;background:#222;background-size:cover;background-position:center;box-shadow:0 12px 40px rgba(0,0,0,0.5)}
+    .caption{font-size:13px;margin-top:6px;color:#ffdfea}
+    .gifts{display:flex;gap:12px;flex-wrap:wrap;}
+    .gift{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:14px;border-radius:12px;flex:0 0 150px;text-align:center;cursor:pointer;transition:transform .18s}
+    .gift:hover{transform:translateY(-6px) rotate(-1deg)}
+    .gift .icon{font-size:26px;margin-bottom:8px}
+    .guestbook input,.guestbook textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:var(--muted);resize:vertical}
+    .btn{background:linear-gradient(90deg,#ffb3c7,#ff96b7);border:none;padding:10px 14px;border-radius:8px;color:#2b0a12;font-weight:600;cursor:pointer}
+    .row{display:flex;gap:10px}
+    .muted{color:rgba(255,255,255,0.7);font-size:13px}
+    #playFallback{position:fixed;right:20px;bottom:20px;background:linear-gradient(90deg,#ffd6e2,#ffb7d1);padding:12px 14px;border-radius:999px;box-shadow:0 8px 40px rgba(0,0,0,0.35);cursor:pointer;display:none;z-index:60}
+    #confetti{position:fixed;left:0;top:0;pointer-events:none;z-index:5}
+    @media (max-width:640px){.greeting{font-size:42px}.photo{min-width:190px;height:120px}}
+
+    /* 🎬 Story popup */
+    #storyModal{
+      position:fixed;inset:0;display:none;align-items:center;justify-content:center;
+      background:rgba(0,0,0,0.6);backdrop-filter:blur(8px);z-index:90;
+    }
+    #storyModal .story-box{
+      background:rgba(255,255,255,0.08);
+      border-radius:16px;
+      padding:12px;
+      width:90%;
+      max-width:600px;
+      max-height:70vh;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      box-shadow:0 8px 40px rgba(0,0,0,0.4);
+      overflow:hidden;
+    }
+    #storyModal video{
+      width:100%;
+      height:auto;
+      max-height:60vh;
+      border-radius:12px;
+      object-fit:contain;
+    }
+    .story-controls{
+      margin-top:8px;
+      width:100%;
+      text-align:right;
+    }
+
+    /* Password overlay */
+    #passwordOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.96);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 1s ease;
+    }
+    #passwordBox {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 18px;
+      padding: 28px 36px;
+      text-align: center;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+      color: white;
+      max-width: 300px;
+      width: 90%;
+    }
+    #passwordBox h2 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 32px;
+      margin-bottom: 16px;
+      color: var(--accent);
+    }
+    #passwordInput {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      text-align: center;
+      font-size: 16px;
+    }
+    #passwordSubmit {
+      margin-top: 14px;
+      padding: 10px 20px;
+      background: linear-gradient(90deg, #ffb3c7, #ff96b7);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #2b0a12;
+    }
+    #passwordError {
+      color: #ffb3b3;
+      font-size: 13px;
+      margin-top: 8px;
+      display: none;
+    }
+  </style>
+</head>
+<body class="locked">
+
+  <!-- Password Prompt Overlay -->
+  <div id="passwordOverlay">
+    <div id="passwordBox">
+      <h2>Enter Password 💖</h2>
+      <input type="password" id="passwordInput" placeholder="Enter secret code" />
+      <button id="passwordSubmit">Unlock</button>
+      <p id="passwordError">Incorrect password. Try again.</p>
+    </div>
+  </div>
+
+  <div class="hearts" id="hearts"></div>
+  <canvas id="confetti"></canvas>
+
+  <div class="wrap" id="mainContent">
+    <header class="hero card">
+      <h1 class="greeting">Happy Birthday, Shree ✨</h1>
+      <p class="subtitle">Hey Shree! Today’s a special day, and this little corner of the internet is just for you.</p>
+      <p class="small">Wishing you a day filled with smiles, love, and all the happy things you deserve. Happy Birthday!</p>
+      <div style="margin-top:18px;">
+        <button class="btn" id="scrollDownBtn">See our story ↓</button>
+      </div>
+    </header>
+
+    <section class="card" id="timeline">
+      <h2>Special about this birthday</h2>
+      <p class="lead">25 October 2025 - Today is the day you became elder</p>
+      <p>Welcome to your special day! Turning 18 is a big step into a world full of new adventures, dreams, and endless possibilities. This little surprise website is here to celebrate YOU. Happy 18th Birthday!</p>
+      <div class="timeline" id="timelineList"></div>
+    </section>
+
+    <section class="card" id="photos">
+      <h2>Photo Reel</h2>
+      <div class="photoreel" id="photoreel">
+        <div class="photo" style="background-image:url('photo 1.jpeg');"></div>
+        <div class="photo" style="background-image:url('photo 2.jpeg');"></div>
+        <div class="photo" style="background-image:url('photo 3.jpeg');"></div>
+        <div class="photo" style="background-image:url('photo 4.jpeg');"></div>
+        <div class="photo" style="background-image:url('photo 5.jpeg');"></div>
+        <div class="photo" style="background-image:url('photo 6.jpeg');"></div>
+        <div class="photo" style="background-image:url('photo 7.jpeg');"></div>
+        <div class="photo" style="background-image:url('photo 8.jpeg');"></div>
+        <div class="photo" style="background-image:url('photo 9.jpeg');"></div>
+        <div class="photo" style="background-image:url('photo 10.jpeg');"></div>
+      </div>
+    </section>
+
+    <section class="card" id="wish">
+      <h2>Your Birthday Wish</h2>
+      <p style="font-size:16px;color:#ffeaf0;line-height:1.6">
+        Eighteen is a special milestone — the start of a new chapter filled with endless opportunities. Here’s to you, your dreams, and a fantastic year ahead. Happy 18th Birthday! Hope this surprise made your day even more memorable.
+      </p>
+    </section>
+
+    <section class="card" id="gifts">
+      <h2>Virtual Gift Box</h2>
+      <div class="gifts" id="giftList">
+        <div class="gift" data-message="Dear Shree,<br><br>
+We don’t know where to begin because every time we think about you, words start to feel too small for what our hearts want to say. You’ve become such a beautiful part of our lives — the kind that doesn’t fade, no matter how many days pass.<br><br>
+
+You bring warmth to our cold days, peace to our storms, and smiles to our silence. We still don’t know how you do it — how you turn the simplest moments into memories we never want to forget.<br><br>
+
+Every time we see you, it feels like the world slows down for a second, just to let us take in how lucky we are to have you. You’ve taught us what love really means — not just in grand gestures, but in soft words, patient understanding, and quiet care.<br><br>
+
+On your special day, we just want you to know that you are deeply loved — not just today, but every single day. You are our favorite thought, our calm place, and the best part of every tomorrow we imagine.<br><br>— Team Wishify ❤️">
+          <div class="icon">🎁</div><div>Open Gift</div>
+        </div>
+        <div class="gift" id="ourStoryGift"><div class="icon">🎬</div><div>Birthday Video</div></div>
+        <div class="gift" data-message="We promise to always cheer for your dreams, celebrate your successes, and be quiet supporters from afar as you explore every amazing moment life has to offer. May this year bring you growth, happiness, and the courage to chase your passions fearlessly. Here’s to your bright future—we promise to wish you all the best, today and always.<br><br>— Team Wishify ❤️">
+          <div class="icon">✈️</div><div>Promise</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="future">
+      <h2>Forever Us</h2>
+      <ul>
+        <li>Though we may be strangers, some connections feel timeless. On your special day and always, Wishify celebrates the wonderful person you are and the bright future that lies ahead. May this day mark the start of endless memories and a journey filled with joy. From all of us at Wishify—here’s to forever celebrating YOU.</li>
+      </ul>
+    </section>
+
+    <section class="card guestbook" id="guestbook">
+      <h2>ChatBook</h2>
+      <div style="display:grid;gap:8px;">
+        <input id="gbName" placeholder="From" />
+        <textarea id="gbMessage" rows="3" placeholder="Your message"></textarea>
+        <div class="row">
+          <button class="btn" id="gbSave">Save Message</button>
+          <button class="btn" id="gbClear" style="background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.06)">Clear</button>
+        </div>
+      </div>
+      <div id="gbList" style="margin-top:12px;"></div>
+    </section>
+
+    <footer style="text-align:center;margin-top:28px;color:rgba(255,255,255,0.6);font-size:13px">
+      <div style="font-weight:700">
+        <img src="logo.jpeg" alt="Wishify Logo" style="width:64px; height:64px; border-radius:14px;"><br>
+      Made with ❤️ — Open the page on a phone for a sweeter feel.
+    </footer>
+  </div>
+
+  <audio id="bgAudio" src="music.mp3" loop playsinline></audio>
+  <div id="playFallback"><div class="p">Play music for Shree</div></div>
+
+  <!-- 🎬 OUR STORY VIDEO MODAL -->
+  <div id="storyModal">
+    <div class="story-box">
+      <video id="storyVideo" controls>
+        <source src="Video.mp4" type="video/mp4">
+      </video>
+      <div class="story-controls">
+        <button class="btn" id="closeStory">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🎁 TEXT MODAL -->
+  <div id="modal" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:70;background:rgba(0,0,0,0.4);backdrop-filter:blur(6px);">
+    <div style="background:rgba(255,255,255,0.1);backdrop-filter:blur(15px);border:1px solid rgba(255,255,255,0.2);padding:24px;border-radius:16px;max-width:520px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.6);">
+      <div id="modalText" style="color:#fff"></div>
+      <div style="text-align:right;margin-top:12px"><button class="btn" id="modalClose">Close</button></div>
+    </div>
+  </div>
+
+  <script>
+    // Password logic
+    const correctPassword = "shree";
+    const overlay = document.getElementById("passwordOverlay");
+    const input = document.getElementById("passwordInput");
+    const error = document.getElementById("passwordError");
+    const submit = document.getElementById("passwordSubmit");
+    const mainContent = document.querySelector(".wrap");
+
+    submit.addEventListener("click", checkPassword);
+    input.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") checkPassword();
+    });
+
+    function checkPassword() {
+      if (input.value === correctPassword) {
+        overlay.style.opacity = "0";
+        setTimeout(() => {
+          overlay.style.display = "none";
+          mainContent.style.display = "block";
+          document.body.classList.remove("locked");
+        }, 1000);
+      } else {
+        error.style.display = "block";
+      }
+    }
+
+    // Timeline
+    const timelineData=[];
+
+    const timelineList=document.getElementById('timelineList');
+    timelineData.forEach(t=>{
+      const el=document.createElement('div');
+      el.className='moment';
+      el.innerHTML=`<div class="dot"></div><div><div class="meta"><strong>${t.title}</strong> <span class="muted">— ${t.date}</span></div><div class="desc">${t.desc}</div></div>`;
+      timelineList.appendChild(el);
+    });
+
+    // Gift modal
+    document.querySelectorAll('.gift').forEach(g=>{
+      g.addEventListener('click',()=>{
+        const msg=g.getAttribute('data-message');
+        if(msg)showModal(msg);
+      });
+    });
+    function showModal(text){
+      document.getElementById('modalText').innerHTML=text;
+      document.getElementById('modal').style.display='flex';
+    }
+    document.getElementById('modalClose').addEventListener('click',()=>document.getElementById('modal').style.display='none');
+
+    // Story modal
+    const storyModal=document.getElementById('storyModal');
+    const storyVideo=document.getElementById('storyVideo');
+    document.getElementById('ourStoryGift').addEventListener('click',()=>{
+      storyModal.style.display='flex';
+      storyVideo.play();
+    });
+    document.getElementById('closeStory').addEventListener('click',()=>{
+      storyModal.style.display='none';
+      storyVideo.pause();
+    });
+
+    // Music autoplay
+    const audio=document.getElementById('bgAudio'),playFallback=document.getElementById('playFallback');
+    function tryAutoPlay(){
+      const p=audio.play();
+      if(p)p.then(()=>playFallback.style.display='none').catch(()=>playFallback.style.display='block');
+      else playFallback.style.display='block';
+    }
+    document.addEventListener('DOMContentLoaded',tryAutoPlay);
+    playFallback.addEventListener('click',()=>{audio.play();playFallback.style.display='none';});
+
+    // Hearts animation
+    const heartsRoot=document.getElementById('hearts');
+    function makeHeart(){
+      const h=document.createElement('div');
+      const size=(Math.random()*24)+12;
+      h.style.position='absolute';
+      h.style.left=(Math.random()*100)+'%';
+      h.style.bottom='-40px';
+      h.style.width=size+'px';
+      h.style.height=size+'px';
+      h.style.backgroundImage='radial-gradient(circle at 35% 30%, #fff7fc 0%, #ffd6e0 18%, #ff8fb2 60%)';
+      h.style.transform='rotate('+((Math.random()*60)-30)+'deg)';
+      h.style.opacity=0.9;
+      h.style.borderRadius='40% 60% 45% 55% / 60% 50% 50% 40%';
+      heartsRoot.appendChild(h);
+      const duration=6000+Math.random()*6000;
+      const start=Date.now();
+      const startX=parseFloat(h.style.left);
+      const drift=(Math.random()*20)-10;
+      (function anim(){
+        const t=(Date.now()-start)/duration;
+        if(t>=1){h.remove();return;}
+        h.style.bottom=(t*110)+'%';
+        h.style.left=(startX+drift*Math.sin(t*3))+'%';
+        h.style.opacity=String(1-t*0.7);
+        requestAnimationFrame(anim);
+      })();
+    }
+    setInterval(makeHeart,600);
+
+    // Confetti
+    const confettiCanvas=document.getElementById('confetti');
+    const ctx=confettiCanvas.getContext('2d');
+    let W,H;
+    function resize(){
+      W=confettiCanvas.width=window.innerWidth;
+      H=confettiCanvas.height=window.innerHeight;
+    }
+    window.addEventListener('resize',resize);
+    resize();
+    const confetti=[];
+    for(let i=0;i<120;i++){
+      confetti.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*6+2,d:Math.random()*1.2,clr:`hsl(${Math.random()*360},70%,60%)`});
+    }
+    function drawConfetti(){
+      ctx.clearRect(0,0,W,H);
+      for(let i=0;i<confetti.length;i++){
+        const p=confetti[i];
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2,false);
+        ctx.fillStyle=p.clr;
+        ctx.fill();
+      }
+      updateConfetti();
+    }
+    function updateConfetti(){
+      for(let i=0;i<confetti.length;i++){
+        const p=confetti[i];
+        p.y+=p.d;
+        p.x+=Math.sin(p.y/20);
+        if(p.y>H){
+          confetti[i]={x:Math.random()*W,y:-10,r:p.r,d:p.d,clr:p.clr};
+        }
+      }
+    }
+    (function animateConfetti(){
+      drawConfetti();
+      requestAnimationFrame(animateConfetti);
+    })();
+
+    // Scroll button
+    document.getElementById('scrollDownBtn').addEventListener('click',()=>{
+      document.getElementById('timeline').scrollIntoView({behavior:'smooth'});
+    });
+
+    // ChatBook save functionality
+    const gbName=document.getElementById("gbName");
+    const gbMessage=document.getElementById("gbMessage");
+    const gbList=document.getElementById("gbList");
+    const gbSave=document.getElementById("gbSave");
+    const gbClear=document.getElementById("gbClear");
+    let messages=JSON.parse(localStorage.getItem("chatbookMessages"))||[];
+    renderMessages();
+    gbSave.addEventListener("click",()=>{
+      const name=gbName.value.trim();
+      const message=gbMessage.value.trim();
+      if(!name||!message)return alert("Please fill out both fields 🥰");
+      const entry={name,message,time:new Date().toLocaleString()};
+      messages.push(entry);
+      localStorage.setItem("chatbookMessages",JSON.stringify(messages));
+      gbName.value="";gbMessage.value="";
+      renderMessages();
+    });
+    gbClear.addEventListener("click",()=>{
+      if(confirm("Clear all saved messages?")){
+        messages=[];
+        localStorage.removeItem("chatbookMessages");
+        renderMessages();
+      }
+    });
+    function renderMessages(){
+      gbList.innerHTML="";
+      if(messages.length===0){
+        gbList.innerHTML="<p class='muted'>No messages yet — be the first to leave one! 💌</p>";
+        return;
+      }
+      messages.slice().reverse().forEach(m=>{
+        const div=document.createElement("div");
+        div.style.padding="10px";
+        div.style.borderBottom="1px solid rgba(255,255,255,0.1)";
+        div.innerHTML=`<strong style='color:#ffd6e0'>${m.name}</strong><br>
+          <span style='font-size:14px;color:#f8eef6'>${m.message}</span><br>
+          <span class='muted'>${m.time}</span>`;
+        gbList.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>
